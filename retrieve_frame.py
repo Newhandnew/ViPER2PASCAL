@@ -7,6 +7,8 @@ def retrieve_image(video_name, input_dir='tests', frame_second=3, output_dir='ou
     Args:
       video_name: input video name
       frame_seconds: catch image every x seconds
+      output_dir: output directory
+      image_sets: name of image_sets file
 
     Returns:
       Image file and image name
@@ -40,6 +42,8 @@ def retrieve_image(video_name, input_dir='tests', frame_second=3, output_dir='ou
             cv2.imwrite(imgOutput, img)
             pathImageSets = os.path.join(outputImageSetsDir, image_sets + ".txt")
             # write imagesets file
+            if not os.path.exists(pathImageSets):
+                open(pathImageSets, 'a').close()
             if output_name in open(pathImageSets).read():
                 print('{} already exist'.format(output_name))
             else:

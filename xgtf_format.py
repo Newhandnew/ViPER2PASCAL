@@ -1,6 +1,6 @@
 from lxml import etree
 
-path = "/home/new/Downloads/actions1.xgtf"
+path = "tests/actions1.xgtf"
 
 root = etree.parse(path).getroot()
 
