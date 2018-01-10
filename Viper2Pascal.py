@@ -1,3 +1,4 @@
+import os
 from lxml import etree
 from pascal_voc_io import PascalVocWriter
 
@@ -33,14 +34,11 @@ def Viper_2_Pascal(viper_file, frame_num):
                 objectAttrib['bbox'] = bbox
                 objectList.append(objectAttrib)
                 break
-    print(objectList)
-        # writer = PascalVocWriter('tests', 'test', (512, 512, 1), localImgPath='tests/test.bmp')
-        # difficult = 1
-        # writer.addBndBox(60, 40, 430, 504, 'person', difficult)
-        # writer.addBndBox(113, 40, 450, 403, 'face', difficult)
-        # writer.save('tests/test.xml')
+    return objectList
+
 
 def change_to_regular_name(name):
+    # vehicle -> car
     outputName = name.lower()
     if outputName == 'vehicle':
         outputName = 'car'
@@ -48,6 +46,36 @@ def change_to_regular_name(name):
         print('not a regular name: {}'.format(outputName))
     return outputName
 
+def write_pascal_file(input_folder, image_name, image_size, object_list, output_dir='output'):
+    # write to Pascal format
+    """input PASCAL format information and ViPer object list, then save PASCAL xml file
+
+    Args:
+        input_folder: input folder of image
+        image_name: image name without file extension
+        image_size: (height, width, depth)
+        object_list: object list from ViPER format
+
+    """
+    outputAnnoDir = os.path.join(output_dir, "Annotation")
+    if not os.path.exists(outputAnnoDir):
+        os.makedirs(outputAnnoDir)
+    writer = PascalVocWriter(input_folder, image_name + '.jpg', image_size)
+    difficult = 0
+    for object in object_list:
+        writer.addBndBox(object['bbox'][0], object['bbox'][1], object['bbox'][2], object['bbox'][3], object['name'], difficult)
+    outputPascalFile = os.path.join(outputAnnoDir, image_name + '.xml')
+    writer.save(outputPascalFile)
+    print("save PASCAL file {}".format(outputPascalFile))
+
+
+
 if __name__ == "__main__":
     path = "tests/actions1.xgtf"
-    Viper_2_Pascal(path, 272)
+    objectList = Viper_2_Pascal(path, 272)
+    for object in objectList:
+        print('name: {}, bounding box: {}'.format(object['name'], object['bbox']) )
+    inputFolder = "output/images"
+    imageName = 'actions1.mpg_0072'
+    image_size = (540, 960, 3)
+    write_pascal_file(inputFolder, imageName, image_size, objectList)
