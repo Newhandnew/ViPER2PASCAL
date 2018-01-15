@@ -27,5 +27,5 @@ if __name__ == '__main__':
 
     for file in files:
         objectList = Viper_2_Pascal(args.anno_label, file['frame_number'])
-        inputFolder = os.path.join(args.output_dir, 'images')
+        inputFolder = 'images'
         write_pascal_file(inputFolder, file['name'], file['size'], objectList)

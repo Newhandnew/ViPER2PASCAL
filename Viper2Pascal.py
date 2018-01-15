@@ -57,7 +57,7 @@ def write_pascal_file(input_folder, image_name, image_size, object_list, output_
         object_list: object list from ViPER format
 
     """
-    outputAnnoDir = os.path.join(output_dir, "Annotation")
+    outputAnnoDir = os.path.join(output_dir, "Annotations")
     if not os.path.exists(outputAnnoDir):
         os.makedirs(outputAnnoDir)
     writer = PascalVocWriter(input_folder, image_name + '.jpg', image_size)

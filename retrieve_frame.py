@@ -1,7 +1,7 @@
 import cv2
 import os
 
-def retrieve_image(video_name, input_dir='tests', frame_second=3, output_dir='output', image_sets='training'):
+def retrieve_image(video_name, input_dir='tests', frame_second=3, output_dir='output', image_sets='train'):
     """Gets the images every x frame from a video, save ImageSets file and output image names.
 
     Args:
